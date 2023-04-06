@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+</head>
+<body>
+    <form id="weather-form">
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location">
+        <button type="submit">Get Weather</button>
+      </form>
+   
+      
+      <div id="weather-results">
+        <p id="location"></p>
+        <p id="temperature"></p>
+        <p id="description"></p>
+
+      </div>
+      
+    
+</body>
+
+<script>
+
+var data_to_export ;
+const src = document.getElementById("weather_icon");
+const form = document.getElementById('weather-form');
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  
+  const location = document.getElementById('location').value;
+  
+  getWeather(location).then((data) => {
+   console.log(data);
+    
+    document.getElementById('location').innerHTML = data.location;
+    document.getElementById('temperature').innerHTML = data.temperature;
+    document.getElementById('description').innerHTML = data.description;
+    
+  }).catch((error) => {
+    console.error(error);
+  });
+});
+
+async function getWeather(location) {
+  const response = await fetch(`http://localhost:3000/weather?location=${location}`);
+  const data = await response.json();
+  localStorage.setItem('location', data.location );
+  localStorage.setItem('temperature', data.temperature );
+  localStorage.setItem('description', data.description );
+  localStorage.setItem('icon', data.icon );
+  //src.setAttribute("src", "/night icons/"+localStorage.getItem('icon')+".png");
+  return data;
+}
+
+
+
+
+
+
+
+
+
+
+</script>
+</html>
